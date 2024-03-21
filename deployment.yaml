@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sign-language-detector-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sign-language-detector
+  template:
+    metadata:
+      labels:
+        app: sign-language-detector
+    spec:
+      containers:
+      - name: sign-language-detector-container
+        image: python:3.8
+        command: ["python", "inference_classifier.py"]
+        volumeMounts:
+        - name: data-volume
+          mountPath: /app/data
+      volumes:
+      - name: data-volume
+        hostPath:
+          path: /path/to/your/data
